@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>VueJS Documentation code along</title>
+  </head>
+  <body>
+    <!-- App 1 -->
+    <div id="app">
+      {{ message }}
+    </div>
+    <!-- App 2 -->
+    <div id="app-2">
+      <span v-bind:title="message">
+        Hover your mouse over me for a few seconds to see my dynamically bound
+        title!
+      </span>
+    </div>
+    <!-- App 6 -->
+    <div id="app-6">
+      <p>{{ heading }}</p>
+      <p>{{ message }}</p>
+      <input v-model="message" />
+    </div>
+    <script>
+      const app = new Vue({
+        el: '#app',
+        data: {
+          message: 'Hello Vue!',
+        },
+      });
+      const app2 = new Vue({
+        el: '#app-2',
+        data: {
+          message: `You loaded this page on ${new Date().toLocaleString()}`,
+        },
+      });
+      const app6 = new Vue({
+        el: '#app-6',
+        data: {
+          heading: 'Two way binding test',
+          message: 'Hello Vue!',
+        },
+      });
+    </script>
+  </body>
+</html>
