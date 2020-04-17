@@ -10,7 +10,7 @@
       <div class="header">
         <h1>{{ header.toLocaleUpperCase() }}</h1>
         <button
-          v-if="state === 'default'"
+          v-if="state.status === 'default'"
           class="btn btn-primary"
           @click="changeState('edit')"
         >
@@ -20,13 +20,15 @@
           Cancel Adding Item
         </button>
       </div>
-      <div v-if="state === 'edit'" class="add-item-form">
+
+      <div v-if="state.status === 'edit'" class="add-item-form">
         <input
           v-model="newItem"
           type="text"
           placeholder="Add an item"
           @keyup.enter="saveItem"
         />
+        <p>{{charLimit}}/200</p>
         <button
           class="btn btn-primary"
           :disabled="newItem.length === 0"
@@ -35,15 +37,28 @@
           Save Item
         </button>
       </div>
+
+      <!--   :class="{strikeout: item.purchased}" -->
       <ul>
         <li
           v-for="item in reversedItems"
-          :class="{strikeout: item.purchased}"
-          @click="togglePurchased(item)"
+          :class="[item.purchased ? 'strikeout' : '', item.highPriority ? 'priority' : '']"
         >
+          <input
+            type="checkbox"
+            @click="togglePurchased(item)"
+            v-model="item.purchased"
+          />
+          <input
+            type="checkbox"
+            @click="togglePriority(item)"
+            v-model="item.highPriority"
+            id="priority"
+          />
           {{ item.label }}
         </li>
       </ul>
+
       <p v-if="items.length === 0">Nice job! You've bought all your items.</p>
     </div>
     <script src="https://unpkg.com/vue"></script>
@@ -51,14 +66,16 @@
       const shoppingList = new Vue({
         el: '#shopping-list',
         data: {
-          state: 'default',
+          state: {
+            status: 'default',
+          },
           header: 'shopping list app',
           newItem: '',
           items: [
             {
               label: '10 party hats',
               purchased: false,
-              highPriority: false,
+              highPriority: true,
             },
             {
               label: '2 board games',
@@ -76,21 +93,28 @@
           reversedItems() {
             return this.items.slice(0).reverse();
           },
+          charLimit() {
+            return this.newItem.length;
+          },
         },
         methods: {
           saveItem() {
             this.items.push({
               label: this.newItem,
               purchased: false,
+              highPriority: false,
             });
             this.newItem = '';
           },
           changeState(newState) {
-            this.state = newState;
+            this.state.status = newState;
             this.newItem = '';
           },
           togglePurchased(item) {
             item.purchased = !item.purchased;
+          },
+          togglePriority(item) {
+            item.highPriority = !item.highPriority;
           },
         },
       });
