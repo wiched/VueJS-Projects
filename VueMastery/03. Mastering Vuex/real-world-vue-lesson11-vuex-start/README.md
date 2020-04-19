@@ -19,11 +19,13 @@ We encourage you to follow the course on Vue Mastery, and code along with us. Th
 
 ```
 npm install
+npm install -g json-server
 ```
 
 ### Compiles and hot-reloads for development
 
 ```
+json-server --watch db.json
 npm run serve
 ```
 
