@@ -1,3 +1,5 @@
+/* eslint no-new: "" */
+
 new Vue({
   el: '#app',
   data: {
